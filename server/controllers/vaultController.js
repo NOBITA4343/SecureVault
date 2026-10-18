@@ -18,7 +18,10 @@ const getVaultEntries = async (req, res) => {
   try {
     // BUG #8: No pagination — returns ALL records at once
     // BUG #5: Returns all users' entries, not just logged-in user's
-   const entries = await Vault.find({ userId: req.user._id });
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+  const entries = await Vault.find({ userId: req.user._id }).skip(skip).limit(limit);
 
     res.status(200).json(entries);
   } catch (error) {
