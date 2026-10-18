@@ -14,7 +14,11 @@ dotenv.config({ path: '../.env' });
 const app = express();
 
 // BUG #12: CORS misconfigured — accepts requests from any origin
-app.use(cors());
+app.use(cors({
+  origin: process.env.CLIENT_URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 
 app.use(express.json());
 
